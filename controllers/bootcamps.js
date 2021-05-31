@@ -1,25 +1,24 @@
 const Bootcamp = require('../models/Bootcamp')
 
-exports.getBootcamps = async (req, res, next) => {
-   try {
-       const newBootcamp = Bootcamp.create(req.body)
+exports.getBootcamps = async (req, res, next) => {}
 
-       res.status(201).json({
-           data: newBootcamp,
-       })
-   } catch (e) {
-       res.status(400).json({
-           error: e
-       })
-   }
-}
 
 exports.getBootcamp = (req, res, next) => {
     res.status(200).json({success: true, msg: `Show ${req.params.id} bootcamp`})
 }
 
-exports.createBootcamp = (req, res, next) => {
-    res.status(200).json({success: true, msg: 'Create new bootcamp'})
+exports.createBootcamp = async (req, res, next) => {
+    try {
+        const newBootcamp = await Bootcamp.create(req.body)
+
+        res.status(201).json({
+            data: newBootcamp,
+        })
+    } catch (e) {
+        res.status(400).json({
+            error: e
+        })
+    }
 }
 
 exports.updateBootcamp = (req, res, next) => {
