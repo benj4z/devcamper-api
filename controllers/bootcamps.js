@@ -8,7 +8,7 @@ exports.getBootcamps = async (req, res, next) => {
             data: bootcamps
         })
     } catch (e) {
-        res.status(400).json({error: e})
+        next(e)
     }
 }
 
@@ -37,9 +37,7 @@ exports.createBootcamp = async (req, res, next) => {
             data: newBootcamp,
         })
     } catch (e) {
-        res.status(400).json({
-            error: e
-        })
+        next(e)
     }
 }
 
@@ -51,12 +49,12 @@ exports.updateBootcamp = async (req, res, next) => {
         })
 
         if (!bootcamp) {
-            return res.status(400).json({message: 'error'})
+            return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404))
         }
 
         res.status(200).json({ data: bootcamp })
     } catch (e) {
-        res.status(400)
+        next(e)
     }
 }
 
@@ -65,11 +63,11 @@ exports.deleteBootcamp = async (req, res, next) => {
         const bootcamp = await Bootcamp.findByIdAndDelete(req.params.id)
 
         if (!bootcamp) {
-            return res.status(400).json({message: 'error'})
+            return next(new ErrorResponse(`Bootcamp not found with id of ${req.params.id}`, 404))
         }
 
         res.status(200).json({ data: {} })
     } catch (e) {
-        res.status(400)
+        next(e)
     }
 }
